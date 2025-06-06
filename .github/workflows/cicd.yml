@@ -1,0 +1,75 @@
+name: build and deploy
+permissions:
+  id-token: write # Important for at least docker gha cache
+  contents: read
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    name: lint
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4.2.2
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "23"
+      - name: Enable Corepack
+        run: corepack enable
+      - name: Install dependencies
+        run: yarn install --immutable
+      - name: Run linter and typecheck
+        run: yarn check
+        env:
+          SKIP_ENV_VALIDATION: true
+  format:
+    runs-on: ubuntu-latest
+    name: format
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4.2.2
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "23"
+      - name: Enable Corepack
+        run: corepack enable
+      - name: Install dependencies
+        run: yarn install --immutable
+      - name: Check formatting
+        run: yarn format:check
+        env:
+          SKIP_ENV_VALIDATION: true
+  test:
+    runs-on: ubuntu-latest
+    name: test
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4.2.2
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "23"
+      - name: Enable Corepack
+        run: corepack enable
+      - name: Install dependencies
+        run: yarn install --immutable
+      - name: Run tests
+        run: yarn test
+  build:
+    uses: ./.github/workflows/build.yml
+    needs: ["lint", "format", "test"]
+    secrets: inherit
+  deploy_prod:
+    uses: ./.github/workflows/deploy.yml
+    if: github.ref == 'refs/heads/main'
+    needs: ["build"]
+    with:
+      environment: "prod"
+      namespace: "hellok8s"
+      url: https://hellok8s-nextjs.deni.cloud
+    secrets: inherit
