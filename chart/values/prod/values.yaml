@@ -1,0 +1,24 @@
+appConfig:
+  clientVar: prod
+  authUrl: https://hellok8s-nextjs.deni.cloud
+
+resources:
+  limits:
+    memory: 1Gi
+  requests:
+    memory: 512Mi
+
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+  hosts:
+    - host: hellok8s-nextjs.deni.cloud
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: hellok8s-nextjs
+      hosts:
+        - hellok8s-nextjs.deni.cloud

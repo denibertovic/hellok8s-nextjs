@@ -1,0 +1,10 @@
+{
+  "amp.notifications.enabled": true,
+  "amp.mcpServers": {
+    "playwright": {
+      "command": "playwright-mcp-wrapped",
+      "args": []
+    }
+  },
+  "amp.commands.allowlist": ["devenv", "yarn"]
+}

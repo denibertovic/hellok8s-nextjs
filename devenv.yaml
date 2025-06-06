@@ -1,0 +1,17 @@
+inputs:
+  mk-shell-bin:
+    url: github:rrbutani/nix-mk-shell-bin
+  nix2container:
+    url: github:nlewo/nix2container
+    inputs:
+      nixpkgs:
+        follows: nixpkgs
+  nixpkgs:
+    url: github:cachix/devenv-nixpkgs/rolling
+  nixpkgs-unstable:
+    url: github:nixos/nixpkgs/2ba17da62f2813a5b779ec2b13abe96baec8ea08
+  nixpkgs-python:
+    url: github:cachix/nixpkgs-python
+    inputs:
+      nixpkgs:
+        follows: nixpkgs
