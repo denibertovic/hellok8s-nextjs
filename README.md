@@ -403,7 +403,7 @@ graph TD
     A[Push to main] --> B{Run Lint, Format, Tests};
     B --> C{Build Docker Image};
     C --> D{Push to Docker Hub};
-    F --> G{Deploy to Production};
+    D --> E{Deploy to Production};
 ```
 
 ### How It Works
