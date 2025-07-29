@@ -26,6 +26,7 @@ in {
     pkgs.aws-vault
     pkgs.kubernetes-helm
     pkgs.sops
+    pkgs.vips
     pkgs-unstable.playwright
     pkgs-unstable.playwright-test
     pkgs-unstable.playwright-mcp

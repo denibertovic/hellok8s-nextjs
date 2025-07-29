@@ -8,6 +8,20 @@
       "when": 1752325039492,
       "tag": "0000_loose_thena",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1753804419439,
+      "tag": "0001_chief_daredevil",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1753828367301,
+      "tag": "0002_fantastic_black_queen",
+      "breakpoints": true
     }
   ]
 }

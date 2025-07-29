@@ -14,6 +14,7 @@ export const env = createEnv({
     AUTH_URL: z.string().url().optional(),
     DATABASE_URL: z.string().url(),
     REDIS_URL: z.string().url().optional(),
+    UPLOAD_PATH: z.string().default("./uploads"),
     NODE_ENV: z
       .enum(["development", "test", "production"])
       .default("development"),
@@ -37,6 +38,7 @@ export const env = createEnv({
     AUTH_URL: process.env.AUTH_URL,
     DATABASE_URL: process.env.DATABASE_URL,
     REDIS_URL: process.env.REDIS_URL,
+    UPLOAD_PATH: process.env.UPLOAD_PATH,
     NODE_ENV: process.env.NODE_ENV,
     NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },

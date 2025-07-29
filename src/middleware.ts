@@ -5,7 +5,7 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Routes that require admin authentication
-  const adminRoutes = ["/admin", "/api/posts"];
+  const adminRoutes = ["/admin", "/api/posts", "/api/images", "/api/thumbnail"];
 
   // Handle login page - redirect if already authenticated
   if (pathname === "/admin/login") {
@@ -58,6 +58,7 @@ export const config = {
     "/admin/:path*",
     // Match API routes that need protection
     "/api/posts/:path*",
-    // Add other protected routes here
+    "/api/images/:path*",
+    "/api/thumbnail/:path*",
   ],
 };

@@ -54,8 +54,37 @@ export const users = createTable("user", (t) => ({
   image: t.varchar({ length: 255 }),
 }));
 
+export const images = createTable(
+  "image",
+  (t) => ({
+    id: t.integer().primaryKey().generatedByDefaultAsIdentity(),
+    fileName: t.varchar({ length: 255 }).notNull().unique(),
+    originalPath: t.varchar({ length: 512 }).notNull(),
+    transformedPath: t.varchar({ length: 512 }),
+    mimeType: t.varchar({ length: 100 }).notNull(),
+    fileSize: t.integer().notNull(),
+    width: t.integer(),
+    height: t.integer(),
+    uploadedById: t
+      .varchar({ length: 255 })
+      .notNull()
+      .references(() => users.id),
+    createdAt: t
+      .timestamp({ withTimezone: true })
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+    updatedAt: t.timestamp({ withTimezone: true }).$onUpdate(() => new Date()),
+  }),
+  (table) => [
+    index("uploaded_by_idx").on(table.uploadedById),
+    index("created_at_idx").on(table.createdAt),
+    index("file_name_idx").on(table.fileName),
+  ],
+);
+
 export const usersRelations = relations(users, ({ many }) => ({
   posts: many(posts),
+  images: many(images),
 }));
 
 export const postsRelations = relations(posts, ({ one }) => ({
@@ -65,8 +94,16 @@ export const postsRelations = relations(posts, ({ one }) => ({
   }),
 }));
 
+export const imagesRelations = relations(images, ({ one }) => ({
+  uploadedBy: one(users, {
+    fields: [images.uploadedById],
+    references: [users.id],
+  }),
+}));
+
 export type User = InferSelectModel<typeof users>;
 export type Post = InferSelectModel<typeof posts>;
+export type Image = InferSelectModel<typeof images>;
 
 // Public user data (safe to expose)
 export type UserPublic = Pick<User, "firstName" | "lastName" | "email">;

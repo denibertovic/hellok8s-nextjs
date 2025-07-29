@@ -185,6 +185,19 @@ To create an initial user for testing:
 yarn createsuperuser
 ```
 
+## File Upload Configuration
+
+This application supports image uploads with the following constraints:
+
+- **Maximum file size**: 10MB per upload
+- **Body size limits**:
+  - Next.js: 25MB (configured for Base64 encoding overhead)
+  - Ingress: 20MB (nginx proxy-body-size)
+- **Supported formats**: Standard image formats (JPEG, PNG, WebP, etc.)
+- **Memory requirements**: Pod specs include 512MB memory limit for image processing
+
+These limits are designed for internal tool usage with moderate file sizes. For larger files or higher traffic, consider implementing direct S3 uploads or FormData endpoints.
+
 ## AI Development Tools
 
 This project comes pre-configured with several AI-powered development tools that are automatically installed via the devenv setup. This may be particularly useful for developers who may not have Node.js/npm/yarn installed on their machines globally.
