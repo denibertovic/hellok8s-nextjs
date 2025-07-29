@@ -53,7 +53,7 @@
     "@eslint/eslintrc": "^3.3.1",
     "@google/gemini-cli": "^0.1.12",
     "@openai/codex": "^0.6.0",
-    "@sourcegraph/amp": "^0.0.1752609840-gbf1029",
+    "@sourcegraph/amp": "^0.0.1753792483-gf08507",
     "@tailwindcss/postcss": "^4.0.15",
     "@types/bcryptjs": "^2.4.6",
     "@types/jest": "^29.5.14",
