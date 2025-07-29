@@ -6,5 +6,5 @@
       "args": []
     }
   },
-  "amp.commands.allowlist": ["devenv", "yarn"]
+  "amp.commands.allowlist": ["devenv", "yarn", "notify-send"]
 }

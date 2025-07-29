@@ -16,6 +16,13 @@
 - **Auto-format**: Always run `yarn format:write` after making any code changes to ensure consistent formatting
 - **Lint Check**: Always run `yarn check` after making code changes to catch linting and type errors
 - **Yarn Install**: Always use `yarn install --immutable` instead of `--frozen-lockfile` (deprecated in Yarn v2+)
+- NEVER run `yarn dev`. Instead you should use `devenv up -d`. ALWAYS check if the
+  dev environment is already running first because maybe the user already started it.
+- When working on a task ALWAYS notify the user when it's finished by running the following
+  command: notify-send "AGENT: Finished! <VERY_SHORT_TASK_SUMMARY>" and replace <VERY_SHORT_TAKS_SUMMARY> with
+  a very short summary of what you've done. Once to two sentences MAX!
+- When going to ask the user for permisson ALWAY first run: notify-send "AGENT: I need permission to run <COMMAND>" and
+  replace <COMMAND> with whatever you need permission or input for.
 
 ## Code Style
 
