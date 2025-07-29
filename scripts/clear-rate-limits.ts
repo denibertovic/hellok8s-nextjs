@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { createClient } from "redis";
+import Redis from "ioredis";
 import { env } from "../src/env.js";
 
 /**
@@ -21,14 +21,12 @@ async function clearRateLimits() {
       env.REDIS_URL ?? "redis://:devredispassword@localhost:6379";
     console.log(`📡 Connecting to Redis...`);
 
-    const client = createClient({ url: redisUrl });
+    const client = new Redis(redisUrl);
 
-    client.on("error", (err) => {
+    client.on("error", (err: Error) => {
       console.error("❌ Redis connection error:", err);
       process.exit(1);
     });
-
-    await client.connect();
     console.log("✅ Connected to Redis");
 
     // Rate limit key patterns to search for
@@ -57,7 +55,7 @@ async function clearRateLimits() {
         targetIp === "::1" ||
         targetIp === "localhost";
 
-      const ipKeys = keys.filter((key) => {
+      const ipKeys = keys.filter((key: string) => {
         // For localhost, clear all rate limit keys since development typically uses localhost
         if (isLocalhost) {
           return true; // Clear all rate limit keys for localhost
@@ -73,7 +71,7 @@ async function clearRateLimits() {
 
       if (ipKeys.length > 0) {
         console.log(`   Found ${ipKeys.length} keys for IP ${targetIp}:`);
-        ipKeys.forEach((key) => console.log(`     - ${key}`));
+        ipKeys.forEach((key: string) => console.log(`     - ${key}`));
 
         // Delete all matching keys
         await client.del(ipKeys);
@@ -90,7 +88,7 @@ async function clearRateLimits() {
     // Express-rate-limit might use IP as part of compound keys
     console.log(`🔍 Searching for any remaining IP-related keys...`);
     const allKeys = await client.keys("*");
-    const remainingIpKeys = allKeys.filter((key) =>
+    const remainingIpKeys = allKeys.filter((key: string) =>
       key.toLowerCase().includes(targetIp.toLowerCase()),
     );
 
@@ -98,14 +96,14 @@ async function clearRateLimits() {
       console.log(
         `   Found ${remainingIpKeys.length} additional IP-related keys:`,
       );
-      remainingIpKeys.forEach((key) => console.log(`     - ${key}`));
+      remainingIpKeys.forEach((key: string) => console.log(`     - ${key}`));
 
       await client.del(remainingIpKeys);
       totalKeysCleared += remainingIpKeys.length;
       console.log(`   ✅ Deleted ${remainingIpKeys.length} additional keys`);
     }
 
-    await client.disconnect();
+    await client.quit();
 
     if (totalKeysCleared > 0) {
       console.log(

@@ -1,6 +1,6 @@
 import rateLimit, { type RateLimitRequestHandler } from "express-rate-limit";
-import RedisStore from "rate-limit-redis";
-import { createClient } from "redis";
+import RedisStore, { type RedisReply } from "rate-limit-redis";
+import Redis from "ioredis";
 import { env } from "@/env";
 import { type NextRequest, NextResponse } from "next/server";
 
@@ -34,7 +34,7 @@ type NoOpMiddleware = (
 ) => void;
 
 // Create Redis client for rate limiting
-let redisClient: ReturnType<typeof createClient> | null = null;
+let redisClient: Redis | null = null;
 
 function getRedisClient() {
   // Skip Redis connection in test environment
@@ -47,16 +47,18 @@ function getRedisClient() {
     const redisUrl =
       env.REDIS_URL ?? "redis://:devredispassword@localhost:6379";
 
-    redisClient = createClient({
-      url: redisUrl,
+    // ioredis automatically connects and handles reconnection
+    redisClient = new Redis(redisUrl, {
+      maxRetriesPerRequest: 3,
+      lazyConnect: true, // Connect when first command is sent
     });
 
     redisClient.on("error", (err) => {
       console.warn("Redis rate limiter error:", err);
     });
 
-    redisClient.connect().catch((err) => {
-      console.warn("Failed to connect to Redis for rate limiting:", err);
+    redisClient.on("connect", () => {
+      console.log("Redis rate limiter connected");
     });
   }
 
@@ -97,7 +99,13 @@ function createRateLimiters(): RateLimiters {
     standardHeaders: true,
     legacyHeaders: false,
     store: new RedisStore({
-      sendCommand: (...args: string[]) => getRedisClient().sendCommand(args),
+      sendCommand: (...args: string[]) => {
+        const [command, ...restArgs] = args;
+        return getRedisClient().call(
+          command!,
+          ...restArgs,
+        ) as Promise<RedisReply>;
+      },
       prefix: "auth_rate_limit:",
     }),
   });
@@ -111,7 +119,13 @@ function createRateLimiters(): RateLimiters {
     standardHeaders: true,
     legacyHeaders: false,
     store: new RedisStore({
-      sendCommand: (...args: string[]) => getRedisClient().sendCommand(args),
+      sendCommand: (...args: string[]) => {
+        const [command, ...restArgs] = args;
+        return getRedisClient().call(
+          command!,
+          ...restArgs,
+        ) as Promise<RedisReply>;
+      },
       prefix: "api_rate_limit:",
     }),
   });
