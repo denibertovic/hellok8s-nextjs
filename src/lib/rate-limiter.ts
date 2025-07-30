@@ -43,12 +43,8 @@ function getRedisClient() {
   }
 
   if (!redisClient) {
-    // Use REDIS_URL if available, otherwise fallback to local Redis with devenv password
-    const redisUrl =
-      env.REDIS_URL ?? "redis://:devredispassword@localhost:6379";
-
     // ioredis automatically connects and handles reconnection
-    redisClient = new Redis(redisUrl, {
+    redisClient = new Redis(env.REDIS_URL, {
       maxRetriesPerRequest: 3,
       lazyConnect: true, // Connect when first command is sent
     });

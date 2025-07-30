@@ -13,7 +13,10 @@ export const env = createEnv({
         : z.string().optional(),
     AUTH_URL: z.string().url().optional(),
     DATABASE_URL: z.string().url(),
-    REDIS_URL: z.string().url().optional(),
+    REDIS_URL: z
+      .string()
+      .url()
+      .default("redis://:devredispassword@localhost:6379"),
     UPLOAD_PATH: z.string().default("./uploads"),
     NODE_ENV: z
       .enum(["development", "test", "production"])

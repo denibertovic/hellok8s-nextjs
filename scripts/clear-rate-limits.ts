@@ -17,11 +17,9 @@ async function clearRateLimits() {
 
   try {
     // Connect to Redis using the same configuration as the rate limiter
-    const redisUrl =
-      env.REDIS_URL ?? "redis://:devredispassword@localhost:6379";
     console.log(`📡 Connecting to Redis...`);
 
-    const client = new Redis(redisUrl);
+    const client = new Redis(env.REDIS_URL);
 
     client.on("error", (err: Error) => {
       console.error("❌ Redis connection error:", err);
