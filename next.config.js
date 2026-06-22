@@ -9,10 +9,6 @@ const config = {
   output: "standalone",
   experimental: {
     serverComponentsExternalPackages: ["sharp"],
-    // Set body size limit to 25MB for Base64 uploads
-    bodyParser: {
-      sizeLimit: "25mb",
-    },
   },
 };
 

@@ -8,10 +8,10 @@ export const runtime = "nodejs";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { fileName: string } },
+  { params }: { params: Promise<{ fileName: string }> },
 ) {
   try {
-    const { fileName } = params;
+    const { fileName } = await params;
 
     // Find the image in database
     const image = await db

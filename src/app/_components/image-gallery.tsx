@@ -27,8 +27,9 @@ export function ImageGallery() {
 
   const handleNavigate = useCallback(
     (index: number) => {
-      if (images && index >= 0 && index < images.length) {
-        setSelectedImage(images[index]);
+      const image = images?.[index];
+      if (image && index >= 0 && index < images.length) {
+        setSelectedImage(image);
         setSelectedIndex(index);
       }
     },

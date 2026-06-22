@@ -10,10 +10,11 @@ export const runtime = "nodejs";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { params: string[] } },
+  { params }: { params: Promise<{ params: string[] }> },
 ) {
   try {
-    const [dimensions, fileName] = params.params;
+    const { params: pathParams } = await params;
+    const [dimensions, fileName] = pathParams;
 
     if (!dimensions || !fileName) {
       return NextResponse.json(
