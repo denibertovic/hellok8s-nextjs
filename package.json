@@ -38,12 +38,12 @@
     "drizzle-orm": "^0.41.0",
     "express-rate-limit": "^8.0.0",
     "ioredis": "^5.6.1",
-    "next": "^15.2.3",
+    "next": "^15.3.6",
     "next-auth": "5.0.0-beta.25",
     "postgres": "^3.4.4",
     "rate-limit-redis": "^4.2.1",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "react": "^19.1.4",
+    "react-dom": "^19.1.4",
     "react-image-crop": "^11.0.10",
     "server-only": "^0.0.1",
     "sharp": "^0.34.3",
@@ -51,7 +51,6 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
-    "@anthropic-ai/claude-code": "^1.0.51",
     "@eslint/eslintrc": "^3.3.1",
     "@google/gemini-cli": "^0.1.12",
     "@openai/codex": "^0.6.0",
