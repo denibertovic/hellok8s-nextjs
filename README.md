@@ -142,7 +142,6 @@ Restart your terminal after adding the hook.
    ```
 
    Open `.env` in your editor and fill in the necessary configuration values. The example file contains all the environment variables needed for local development with sensible defaults. You'll need to set values for:
-
    - Database connection settings (default should work already with devenv's postgres)
 
    - NextAuth secret and configuration
@@ -422,7 +421,6 @@ graph TD
 ### How It Works
 
 1. **Triggering Builds:**
-
    - Every push to `main` triggers the CI pipeline
    - On an actual **private** production repo we'd want pull requests to run tests and build validation. This is disabled here since this is a public example repo (see .github/workflows/cicd.yml) which warrants special considerations.
    - Triggers production deployments
