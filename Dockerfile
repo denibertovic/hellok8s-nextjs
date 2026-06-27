@@ -1,6 +1,6 @@
 FROM node:23-slim AS base
 
-ENV YARN_VERSION=4.9.1
+ENV YARN_VERSION=4.14.1
 
 RUN yarn set version $YARN_VERSION
 
