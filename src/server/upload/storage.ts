@@ -16,10 +16,15 @@ export interface StorageProvider {
 }
 
 export class LocalStorageProvider implements StorageProvider {
-  private uploadPath: string;
+  private _uploadPath: string | undefined;
 
-  constructor() {
-    this.uploadPath = path.resolve(env.UPLOAD_PATH);
+  // Resolve the upload path lazily on first use rather than in the constructor.
+  // The module is imported at build time (page-data collection) where
+  // SKIP_ENV_VALIDATION=1 leaves UPLOAD_PATH undefined; resolving here defers
+  // that to runtime, where the env var is actually provided.
+  private get uploadPath(): string {
+    this._uploadPath ??= path.resolve(env.UPLOAD_PATH);
+    return this._uploadPath;
   }
 
   async upload(file: File, fileName: string): Promise<UploadResult> {
